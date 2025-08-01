@@ -18,6 +18,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">チェックアウト
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">人数</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -27,6 +28,12 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $reservation->check_in_date }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $reservation->check_out_date }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $reservation->guest_count }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @can('update', $reservation)
+                                    <a href="{{ route('reservations.edit', $reservation) }}"
+                                        class="text-blue-500 hover:underline">編集</a>
+                                @endcan
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
