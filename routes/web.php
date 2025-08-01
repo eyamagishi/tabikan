@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Hotel;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/hotels', function () {
+    return Hotel::with('rooms')->get();
 });
