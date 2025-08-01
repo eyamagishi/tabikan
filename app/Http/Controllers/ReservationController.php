@@ -27,19 +27,34 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'room_id' => 'required|exists:rooms,id',
-            'check_in_date' => 'required|date|after_or_equal:today',
-            'check_out_date' => 'required|date|after:check_in_date',
-            'guest_count' => 'required|integer|min:1',
-        ]);
+        $messages = [
+            'room_id.required' => '部屋を選択してください。',
+            'room_id.exists' => '選択した部屋は存在しません。',
+            'check_in_date.required' => 'チェックイン日を入力してください。',
+            'check_in_date.date' => '正しい日付形式で入力してください。',
+            'check_in_date.after_or_equal' => 'チェックイン日は今日以降の日付を指定してください。',
+            'check_out_date.required' => 'チェックアウト日を入力してください。',
+            'check_out_date.date' => '正しい日付形式で入力してください。',
+            'check_out_date.after' => 'チェックアウト日はチェックイン日より後の日付を指定してください。',
+            'guest_count.required' => '宿泊人数を入力してください。',
+            'guest_count.integer' => '宿泊人数は整数で入力してください。',
+            'guest_count.min' => '宿泊人数は最低1人以上にしてください。',
+            'guest_count.max' => '宿泊人数は最大10人までです。',
+        ];
+
+        $validatedData = $request->validate([
+            'room_id' => ['required', 'exists:rooms,id'],
+            'check_in_date' => ['required', 'date', 'after_or_equal:today'],
+            'check_out_date' => ['required', 'date', 'after:check_in_date'],
+            'guest_count' => ['required', 'integer', 'min:1', 'max:10'],
+        ], $messages);
 
         Reservation::create([
             'user_id' => Auth::id(),
-            'room_id' => $request->room_id,
-            'check_in_date' => $request->check_in_date,
-            'check_out_date' => $request->check_out_date,
-            'guest_count' => $request->guest_count,
+            'room_id' => $validatedData['room_id'],
+            'check_in_date' => $validatedData['check_in_date'],
+            'check_out_date' => $validatedData['check_out_date'],
+            'guest_count' => $validatedData['guest_count'],
         ]);
 
         return redirect()->route('reservations.create')->with('success', '予約が登録されました。');
