@@ -4,6 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class UpdateReservationRequest
+ *
+ * バリデーションルールとエラーメッセージを定義し、
+ * 予約情報の更新リクエストを検証するフォームリクエストクラス。
+ *
+ * @package App\Http\Requests
+ */
 class UpdateReservationRequest extends FormRequest
 {
     /**
