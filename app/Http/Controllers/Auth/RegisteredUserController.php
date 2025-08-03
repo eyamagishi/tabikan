@@ -31,14 +31,19 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $password = $request->input('password');
+        if (!is_string($password)) {
+            throw new \InvalidArgumentException('Password must be a string.');
+        }
+
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($password),
         ]);
 
         event(new Registered($user));
