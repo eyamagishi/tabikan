@@ -3,27 +3,40 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
+use Illuminate\Support\Collection;
 
 class ReservationForm extends Component
 {
-    public $rooms;
-    public $roomId;
-    public $checkInDate;
-    public $checkOutDate;
-    public $guestCount;
-    public $action;
-    public $method;
-    public $buttonText;
+    public Collection $rooms;
+    public ?int $roomId;
+    public ?string $checkInDate;
+    public ?string $checkOutDate;
+    public int $guestCount;
+    public string $action;
+    public string $method;
+    public string $buttonText;
 
+    /**
+     * 新しいコンポーネントインスタンスを生成する。
+     *
+     * @param Collection $rooms 部屋のコレクション
+     * @param string $action フォームの送信先URL
+     * @param int|null $roomId 選択中の部屋ID（省略可）
+     * @param string|null $checkInDate チェックイン日（省略可）
+     * @param string|null $checkOutDate チェックアウト日（省略可）
+     * @param int $guestCount 宿泊人数（デフォルト1）
+     * @param string $method フォーム送信のHTTPメソッド（デフォルトPOST）
+     * @param string $buttonText 送信ボタンのテキスト（デフォルト「送信」）
+     */
     public function __construct(
-        $rooms,
-        $roomId = null,
-        $checkInDate = null,
-        $checkOutDate = null,
-        $guestCount = 1,
-        $action,
-        $method = 'POST',
-        $buttonText = '送信'
+        Collection $rooms,
+        string $action,
+        ?int $roomId = null,
+        ?string $checkInDate = null,
+        ?string $checkOutDate = null,
+        int $guestCount = 1,
+        string $method = 'POST',
+        string $buttonText = '送信'
     ) {
         $this->rooms = $rooms;
         $this->roomId = $roomId;
@@ -35,6 +48,11 @@ class ReservationForm extends Component
         $this->buttonText = $buttonText;
     }
 
+    /**
+     * コンポーネントのビューを取得する。
+     *
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         return view('components.reservation-form');
