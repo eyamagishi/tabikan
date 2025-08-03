@@ -9,14 +9,14 @@ class HotelFactory extends Factory
 {
     /**
      * 対応するモデルクラス
-     *
+     * 
      * @var string
      */
     protected $model = Hotel::class;
 
     /**
      * モデルのデフォルト状態を定義
-     *
+     * 
      * @return array<string, mixed>
      */
     public function definition(): array

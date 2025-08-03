@@ -21,7 +21,7 @@ class Room extends Model
 
     /**
      * この部屋に紐づくホテル情報を取得するリレーション
-     *
+     * 
      * @return BelongsTo
      */
     public function hotel(): BelongsTo
@@ -31,7 +31,7 @@ class Room extends Model
 
     /**
      * 部屋に属する予約群
-     *
+     * 
      * @return HasMany
      */
     public function reservations(): HasMany

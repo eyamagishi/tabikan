@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class StoreReservationRequest
- *
+ * 
  * バリデーションルールとエラーメッセージを定義し、
  * 予約情報の新規登録リクエストを検証するフォームリクエストクラス。
  *
@@ -15,9 +15,9 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreReservationRequest extends FormRequest
 {
     /**
-     * このリクエストを行うユーザーが認可されているか判定する。
-     *
-     * @return bool 認可されている場合はtrue、そうでなければfalse。
+     * リクエストが許可されているかどうかを判定
+     * 
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -26,7 +26,7 @@ class StoreReservationRequest extends FormRequest
 
     /**
      * リクエストに対するバリデーションルールを取得する。
-     *
+     * 
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      *         各入力項目のバリデーションルール配列
      */
@@ -42,7 +42,7 @@ class StoreReservationRequest extends FormRequest
 
     /**
      * バリデーション失敗時に返すエラーメッセージを定義する。
-     *
+     * 
      * @return array<string, string> フィールドごとのカスタムエラーメッセージ
      */
     public function messages(): array

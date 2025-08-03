@@ -30,7 +30,7 @@ class Hotel extends Model
 
     /**
      * ホテルに属する部屋群
-     *
+     * 
      * @return HasMany
      */
     public function rooms(): HasMany

@@ -16,6 +16,8 @@ class UpdateReservationRequest extends FormRequest
 {
     /**
      * リクエストが許可されているかどうかを判定
+     * 
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -24,7 +26,7 @@ class UpdateReservationRequest extends FormRequest
 
     /**
      * 更新時に適用するバリデーションルール
-     *
+     * 
      * @return array<string, string|string[]>
      */
     public function rules(): array

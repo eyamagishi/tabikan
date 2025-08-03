@@ -42,7 +42,7 @@ class ReservationController extends Controller
     /**
      * 新しい予約を保存する。
      *
-     * @param  StoreReservationRequest  $request
+     * @param  StoreReservationRequest $request
      * @return RedirectResponse
      */
     public function store(StoreReservationRequest $request): RedirectResponse
@@ -63,7 +63,7 @@ class ReservationController extends Controller
     /**
      * 指定された予約の編集画面を表示する。
      *
-     * @param  Reservation  $reservation
+     * @param  Reservation $reservation
      * @return View
      */
     public function edit(Reservation $reservation): View
@@ -78,8 +78,8 @@ class ReservationController extends Controller
     /**
      * 既存の予約情報を更新する。
      *
-     * @param  UpdateReservationRequest  $request
-     * @param  Reservation  $reservation
+     * @param  UpdateReservationRequest $request
+     * @param  Reservation              $reservation
      * @return RedirectResponse
      */
     public function update(UpdateReservationRequest $request, Reservation $reservation): RedirectResponse
