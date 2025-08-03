@@ -4,12 +4,14 @@ namespace App\Policies;
 
 use App\Models\Reservation;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ReservationPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * ユーザーが予約一覧を閲覧できるかどうかを判定
+     *
+     * @param  User  $user
+     * @return bool
      */
     public function viewAny(User $user): bool
     {
@@ -17,7 +19,11 @@ class ReservationPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
+     * ユーザーが特定の予約を閲覧できるかどうかを判定
+     *
+     * @param  User        $user
+     * @param  Reservation $reservation
+     * @return bool
      */
     public function view(User $user, Reservation $reservation): bool
     {
@@ -25,7 +31,10 @@ class ReservationPolicy
     }
 
     /**
-     * Determine whether the user can create models.
+     * ユーザーが予約を作成できるかどうかを判定
+     *
+     * @param  User  $user
+     * @return bool
      */
     public function create(User $user): bool
     {
@@ -33,15 +42,23 @@ class ReservationPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * ユーザーが予約を更新できるかどうかを判定
+     *
+     * @param  User        $user
+     * @param  Reservation $reservation
+     * @return bool
      */
-    public function update(User $user, Reservation $reservation)
+    public function update(User $user, Reservation $reservation): bool
     {
         return $user->id === $reservation->user_id;
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * ユーザーが予約を削除できるかどうかを判定
+     *
+     * @param  User        $user
+     * @param  Reservation $reservation
+     * @return bool
      */
     public function delete(User $user, Reservation $reservation): bool
     {
@@ -49,7 +66,11 @@ class ReservationPolicy
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * ユーザーが予約を復元できるかどうかを判定
+     *
+     * @param  User        $user
+     * @param  Reservation $reservation
+     * @return bool
      */
     public function restore(User $user, Reservation $reservation): bool
     {
@@ -57,7 +78,11 @@ class ReservationPolicy
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * ユーザーが予約を完全に削除できるかどうかを判定
+     *
+     * @param  User        $user
+     * @param  Reservation $reservation
+     * @return bool
      */
     public function forceDelete(User $user, Reservation $reservation): bool
     {

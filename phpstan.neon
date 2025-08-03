@@ -2,9 +2,21 @@ includes:
     - ./vendor/larastan/larastan/extension.neon
 
 parameters:
-    level: 5
+    level: 6
     paths:
         - app
         - routes
     excludePaths:
         - tests
+    ignoreErrors:
+        # ジェネリックトレイト（例: HasFactory）で型パラメータ（T, TModelなど）が指定されていない
+        - message: '#Class .* uses generic trait .* but does not specify its types:#'
+
+        # メソッドの戻り値に対して、ジェネリック型（例: HasMany, BelongsToなど）の型パラメータが未指定
+        - message: '#Method .* return type with generic class .* does not specify its types:#'
+
+        # プロパティにジェネリック型（例: Collection）の型パラメータ（TKey, TValue）が未指定
+        - message: '#Property .* with generic .* does not specify its types:#'
+
+        # メソッドの引数にジェネリック型（例: Collection）の型パラメータ（TKey, TValue）が未指定
+        - message: '#Method .* with generic class .* but does not specify its types:#'

@@ -25,7 +25,7 @@ class UpdateReservationRequest extends FormRequest
     /**
      * 更新時に適用するバリデーションルール
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, string|string[]>
      */
     public function rules(): array
     {
@@ -37,6 +37,11 @@ class UpdateReservationRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションエラーメッセージ
+     *
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [
