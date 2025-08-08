@@ -12,18 +12,14 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /** @var ProfileService $profileService */
-    protected ProfileService $profileService;
-
     /**
      * コンストラクタ。
      * 
      * @param ProfileService $profileService
      */
-    public function __construct(ProfileService $profileService)
-    {
-        $this->profileService = $profileService;
-    }
+    public function __construct(
+        private ProfileService $profileService
+    ) {}
 
     /**
      * Display the user's profile form.
