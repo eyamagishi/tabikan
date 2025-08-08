@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileDeletionRequest;
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\DeleteProfileRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -27,10 +27,10 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      * 
-     * @param  ProfileUpdateRequest $request
+     * @param  UpdateProfileRequest $request
      * @return RedirectResponse
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(UpdateProfileRequest $request): RedirectResponse
     {
         /** @var User $user */
         $user = Auth::user();
@@ -49,10 +49,10 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      * 
-     * @param  ProfileDeletionRequest $request
+     * @param  DeleteProfileRequest $request
      * @return RedirectResponse
      */
-    public function destroy(ProfileDeletionRequest $request): RedirectResponse
+    public function destroy(DeleteProfileRequest $request): RedirectResponse
     {
         /** @var User $user */
         $user = $request->user();

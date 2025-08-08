@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProfileDeletionRequest extends FormRequest
+class DeleteProfileRequest extends FormRequest
 {
     /**
      * ユーザーがこのリクエストを実行する権限があるかどうかを判定します。
