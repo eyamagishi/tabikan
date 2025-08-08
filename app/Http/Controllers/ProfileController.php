@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeleteProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Models\User;
+use App\Services\ProfileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -12,6 +12,19 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    /** @var ProfileService $profileService */
+    protected ProfileService $profileService;
+
+    /**
+     * コンストラクタ。
+     * 
+     * @param ProfileService $profileService
+     */
+    public function __construct(ProfileService $profileService)
+    {
+        $this->profileService = $profileService;
+    }
+
     /**
      * Display the user's profile form.
      * 
@@ -32,16 +45,10 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request): RedirectResponse
     {
-        /** @var User $user */
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $user->fill($request->validated());
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
+        $this->profileService->updateProfile($user, $request->validated());
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
@@ -54,12 +61,12 @@ class ProfileController extends Controller
      */
     public function destroy(DeleteProfileRequest $request): RedirectResponse
     {
-        /** @var User $user */
+        /** @var \App\Models\User $user */
         $user = $request->user();
 
         Auth::logout();
 
-        $user->delete();
+        $this->profileService->deleteProfile($user);
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
