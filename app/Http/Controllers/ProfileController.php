@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileDeletionRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -14,13 +15,12 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      * 
-     * @param  Request $request
      * @return View
      */
-    public function edit(Request $request): View
+    public function edit(): View
     {
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => Auth::user(),
         ]);
     }
 
@@ -32,10 +32,8 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $user = $request->user();
-        if ($user === null) {
-            abort(403, 'Unauthorized');
-        }
+        /** @var User $user */
+        $user = Auth::user();
 
         $user->fill($request->validated());
 
@@ -51,19 +49,13 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      * 
-     * @param  Request $request
+     * @param  ProfileDeletionRequest $request
      * @return RedirectResponse
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(ProfileDeletionRequest $request): RedirectResponse
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
+        /** @var User $user */
         $user = $request->user();
-        if ($user === null) {
-            abort(403, 'Unauthorized');
-        }
 
         Auth::logout();
 
