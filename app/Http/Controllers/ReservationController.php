@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Reservation;
-use App\Models\Room;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
+use App\Services\ReservationService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ReservationController extends Controller
 {
+    /**
+     * コンストラクタ。
+     * 
+     * @param ReservationService $reservationService
+     */
+    public function __construct(
+        private ReservationService $reservationService
+    ) {}
+
     /**
      * ユーザー自身の予約一覧を表示する。
      *
@@ -19,10 +27,8 @@ class ReservationController extends Controller
      */
     public function index(): View
     {
-        $reservations = Reservation::with('room')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->get();
+        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations */
+        $reservations = $this->reservationService->getUserReservations();
 
         return view('reservations.index', compact('reservations'));
     }
@@ -34,7 +40,8 @@ class ReservationController extends Controller
      */
     public function create(): View
     {
-        $rooms = Room::all();
+        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Room> $rooms */
+        $rooms = $this->reservationService->getAllRooms();
 
         return view('reservations.create', compact('rooms'));
     }
@@ -47,15 +54,7 @@ class ReservationController extends Controller
      */
     public function store(StoreReservationRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-
-        Reservation::create([
-            'user_id' => Auth::id(),
-            'room_id' => $validated['room_id'],
-            'check_in_date' => $validated['check_in_date'],
-            'check_out_date' => $validated['check_out_date'],
-            'guest_count' => $validated['guest_count'],
-        ]);
+        $this->reservationService->createReservation($request->validated());
 
         return redirect()->route('reservations.create')->with('success', '予約が登録されました。');
     }
@@ -70,7 +69,8 @@ class ReservationController extends Controller
     {
         $this->authorize('update', $reservation);
 
-        $rooms = Room::all();
+        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Room> $rooms */
+        $rooms = $this->reservationService->getAllRooms();
 
         return view('reservations.edit', compact('reservation', 'rooms'));
     }
@@ -86,7 +86,7 @@ class ReservationController extends Controller
     {
         $this->authorize('update', $reservation);
 
-        $reservation->update($request->validated());
+        $this->reservationService->updateReservation($reservation, $request->validated());
 
         return redirect()->route('reservations.index')->with('success', '予約を更新しました。');
     }
