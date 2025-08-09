@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\DeleteProfileRequest;
+use App\Http\Requests\UpdateProfileRequest;
+use App\Services\ProfileService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -12,53 +13,56 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * コンストラクタ。
+     * 
+     * @param ProfileService $profileService
      */
-    public function edit(Request $request): View
+    public function __construct(
+        private ProfileService $profileService
+    ) {}
+
+    /**
+     * Display the user's profile form.
+     * 
+     * @return View
+     */
+    public function edit(): View
     {
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => Auth::user(),
         ]);
     }
 
     /**
      * Update the user's profile information.
+     * 
+     * @param  UpdateProfileRequest $request
+     * @return RedirectResponse
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(UpdateProfileRequest $request): RedirectResponse
     {
-        $user = $request->user();
-        if ($user === null) {
-            abort(403, 'Unauthorized');
-        }
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
-        $user->fill($request->validated());
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
+        $this->profileService->updateProfile($user, $request->validated());
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
     /**
      * Delete the user's account.
+     * 
+     * @param  DeleteProfileRequest $request
+     * @return RedirectResponse
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(DeleteProfileRequest $request): RedirectResponse
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
+        /** @var \App\Models\User $user */
         $user = $request->user();
-        if ($user === null) {
-            abort(403, 'Unauthorized');
-        }
 
         Auth::logout();
 
-        $user->delete();
+        $this->profileService->deleteProfile($user);
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

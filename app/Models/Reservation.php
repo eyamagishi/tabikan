@@ -21,7 +21,7 @@ class Reservation extends Model
 
     /**
      * この予約に紐づくユーザー情報を取得するリレーション
-     *
+     * 
      * @return BelongsTo
      */
     public function user(): BelongsTo
@@ -31,7 +31,7 @@ class Reservation extends Model
 
     /**
      * この予約に紐づく部屋情報を取得するリレーション
-     *
+     * 
      * @return BelongsTo
      */
     public function room(): BelongsTo

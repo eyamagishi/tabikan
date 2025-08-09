@@ -13,12 +13,14 @@ class UserFactory extends Factory
 {
     /**
      * The current password being used by the factory.
+     * 
+     * @var string|null
      */
     protected static ?string $password;
 
     /**
      * Define the model's default state.
-     *
+     * 
      * @return array<string, mixed>
      */
     public function definition(): array
@@ -34,6 +36,8 @@ class UserFactory extends Factory
 
     /**
      * Indicate that the model's email address should be unverified.
+     * 
+     * @return static
      */
     public function unverified(): static
     {

@@ -10,7 +10,7 @@ class ReservationPolicy
     /**
      * ユーザーが予約一覧を閲覧できるかどうかを判定
      *
-     * @param  User  $user
+     * @param  User $user
      * @return bool
      */
     public function viewAny(User $user): bool
@@ -33,7 +33,7 @@ class ReservationPolicy
     /**
      * ユーザーが予約を作成できるかどうかを判定
      *
-     * @param  User  $user
+     * @param  User $user
      * @return bool
      */
     public function create(User $user): bool

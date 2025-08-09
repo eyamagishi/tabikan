@@ -8,6 +8,11 @@ use App\Models\Room;
 
 class RoomSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     * 
+     * @return void
+     */
     public function run(): void
     {
         $hotel = Hotel::first();

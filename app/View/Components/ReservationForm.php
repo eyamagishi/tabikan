@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\Support\Collection;
+use Illuminate\View\View;
 
 class ReservationForm extends Component
 {
@@ -18,15 +19,15 @@ class ReservationForm extends Component
 
     /**
      * 新しいコンポーネントインスタンスを生成する。
-     *
-     * @param Collection $rooms 部屋のコレクション
-     * @param string $action フォームの送信先URL
-     * @param int|null $roomId 選択中の部屋ID（省略可）
-     * @param string|null $checkInDate チェックイン日（省略可）
-     * @param string|null $checkOutDate チェックアウト日（省略可）
-     * @param int $guestCount 宿泊人数（デフォルト1）
-     * @param string $method フォーム送信のHTTPメソッド（デフォルトPOST）
-     * @param string $buttonText 送信ボタンのテキスト（デフォルト「送信」）
+     * 
+     * @param Collection  $rooms
+     * @param string      $action
+     * @param int|null    $roomId
+     * @param string|null $checkInDate
+     * @param string|null $checkOutDate
+     * @param int         $guestCount
+     * @param string      $method
+     * @param string      $buttonText
      */
     public function __construct(
         Collection $rooms,
@@ -50,10 +51,10 @@ class ReservationForm extends Component
 
     /**
      * コンポーネントのビューを取得する。
-     *
-     * @return \Illuminate\View\View
+     * 
+     * @return View
      */
-    public function render()
+    public function render(): View
     {
         return view('components.reservation-form');
     }
